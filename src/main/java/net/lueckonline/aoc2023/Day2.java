@@ -50,12 +50,8 @@ public class Day2 {
       return this.map.get(Color.red) * this.map.get(Color.green) * this.map.get(Color.blue);
     }
 
-    boolean canContain(CubeSet cubeSet) {
-      return map.get(cubeSet.color) >= cubeSet.count;
-    }
-
     boolean isValidGame(Game game) {
-      return game.pulls.stream().allMatch(this::canContain);
+      return game.pulls.stream().allMatch(cubeSet -> map.get(cubeSet.color) >= cubeSet.count);
     }
 
   }
@@ -79,11 +75,6 @@ public class Day2 {
     int count;
     Color color;
 
-    CubeSet(int count, Color color) {
-      this.count = count;
-      this.color = color;
-    }
-
     CubeSet(String line) {
       final var parts = line.trim().split("\\s", 2);
       this.count = Integer.valueOf(parts[0]);
@@ -91,8 +82,6 @@ public class Day2 {
     }
   }
 
-  static enum Color {
-    red, green, blue
-  }
+  static enum Color { red, green, blue }
 
 }
