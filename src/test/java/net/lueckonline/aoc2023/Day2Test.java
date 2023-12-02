@@ -1,8 +1,9 @@
-package aoc;
+package net.lueckonline.aoc2023;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import net.lueckonline.aoc2023.kotlin.Day2Kt;
 import org.junit.jupiter.api.Test;
 
 import net.lueckonline.aoc2023.Day2;
@@ -19,6 +20,11 @@ public class Day2Test {
   void testPart2() {
     assertThat(Day2.part2(INPUT), is(77021));
   }
+
+	@Test
+	void testPart1Kotlin(){
+		assertThat(Day2Kt.part1(INPUT), is(2285));
+	}
 	
 	static final String INPUT = """
       Game 1: 4 green, 7 blue; 2 blue, 4 red; 5 blue, 2 green, 2 red; 1 green, 3 red, 9 blue; 3 green, 9 blue; 7 green, 2 blue, 2 red
