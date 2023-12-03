@@ -2,7 +2,6 @@ package net.lueckonline.aoc2023.kotlin
 
 import java.util.regex.Matcher
 
-
 class Day3 {
   fun part1(input: String): Int {
 
@@ -14,7 +13,7 @@ class Day3 {
       sum += if(p?.containsSymbols() == true) p.number else 0
     } while (p != null)
 
-    return sum;
+    return sum
   }
 }
 
@@ -24,7 +23,7 @@ class Window private constructor(private val lines : Iterator<String>){
 
   private val regex = Regex("(\\d+)")
 
-  var matcher : Matcher
+  private var matcher : Matcher
 
   init {
     queue.add("")
@@ -67,7 +66,11 @@ class Perimeter (inLastLine: String, inCurrentLine: String, inNextLine: String, 
   }
 
   fun containsSymbols() : Boolean {
-    return Regex("[^0-9.]").find(text) != null
+    return symbolRegex.find(text) != null
+  }
+
+  private companion object {
+    val symbolRegex = Regex("[^0-9.]")
   }
 
 }

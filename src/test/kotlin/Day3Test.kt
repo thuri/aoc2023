@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 
 class Day3Test {
 
-  lateinit var day : Day3
+  private lateinit var day : Day3
 
   @BeforeEach
   fun setUp() {
@@ -17,7 +17,7 @@ class Day3Test {
 
   @Test
   fun shouldSumAllNumberAdjacentToSymbols() {
-    assertThat(day.part1(INPUT), `is`(equalTo(535235)));
+    assertThat(day.part1(INPUT), `is`(equalTo(535235)))
   }
 
 }
