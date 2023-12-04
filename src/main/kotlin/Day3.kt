@@ -19,12 +19,14 @@ class Day3 {
   fun part2(input: String): Int {
 
     val window = Window.create(input)
-    val gearMap : Map<Coordinate, MutableList<Int>> = mutableMapOf()
+    val gearMap : MutableMap<Coordinate, MutableList<Int>> = mutableMapOf()
 
     do {
       val p = window.next()
       p?.gearCoordinates()?.forEach {
-        gearMap.getOrDefault(it, mutableListOf()).add(p.number)
+        val numbersForGear = gearMap.getOrDefault(it, mutableListOf())
+        numbersForGear.add(p.number)
+        gearMap[it] = numbersForGear
       }
     } while (p != null)
 
@@ -43,14 +45,15 @@ class Window private constructor(private val lines: Iterator<IndexedValue<String
   private var matcher : Matcher
 
   init {
-    queue.add(IndexedValue(-1, ""))
-    queue.add(if (lines.hasNext()) lines.next() else IndexedValue(0,""))
-    queue.add(if (lines.hasNext()) lines.next() else IndexedValue(1, ""))
+    val padding = ".".repeat(140)
+    queue.add(IndexedValue(-1, padding))
+    queue.add(if (lines.hasNext()) lines.next() else IndexedValue(0, padding))
+    queue.add(if (lines.hasNext()) lines.next() else IndexedValue(1, padding))
 
     matcher = regex.toPattern().matcher(queue[1].value)
   }
   companion object {
-    fun create(input : String) = Window(input.split("\n").withIndex().iterator())
+    fun create(input : String) = Window(input.split("\n").filter { it.isNotBlank() }.withIndex().iterator())
   }
 
   fun next() : Perimeter? {
@@ -68,16 +71,18 @@ class Window private constructor(private val lines: Iterator<IndexedValue<String
 
 class Perimeter(
   private val lines: List<IndexedValue<String>>,
-  val start: Int,
-  val end: Int,
+  start: Int,
+  end: Int,
   val number: Int
 ){
 
   private val text : String
+  private val startIdx : Int
+  private val endIdx : Int
 
   init {
-    val startIdx = 0.coerceAtLeast(start - 1)
-    val endIdx   = 140.coerceAtMost(end + 1)
+    startIdx = 0.coerceAtLeast(start - 1)
+    endIdx   = 140.coerceAtMost(end + 1)
 
     text = lines
       .map{ it.value }
@@ -90,7 +95,13 @@ class Perimeter(
   }
 
   fun gearCoordinates() : List<Coordinate> {
-    TODO("Not yet implemented")
+    val perimeterLength = endIdx - startIdx
+    val gearRegex = Regex("\\*")
+    return gearRegex.findAll(text)
+      .map { it.range.first }
+      .map { Coordinate( it % perimeterLength, it / perimeterLength)}
+      .map { Coordinate( startIdx + it.x, lines[it.y].index)}
+      .toList()
   }
 
   private companion object {
@@ -98,4 +109,22 @@ class Perimeter(
   }
 }
 
-class Coordinate(x : Int, y : Int)
+class Coordinate(val x : Int, val y : Int) {
+  override fun toString(): String {
+    return "($x,$y)"
+  }
+
+  override fun equals(other: Any?): Boolean {
+    if(other == null) return false
+    if(other is Coordinate) {
+      return other.x == x && other.y == y
+    }
+    return false
+  }
+
+  override fun hashCode(): Int {
+    var result = x
+    result = 31 * result + y
+    return result
+  }
+}

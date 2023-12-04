@@ -22,7 +22,7 @@ class Day3Test {
 
   @Test
   fun shouldSumUpGearRatios() {
-    assertThat(day.part2(INPUT), `is`(equalTo(-2)));
+    assertThat(day.part2(INPUT), `is`(equalTo(79844424)))
   }
 }
 const val INPUT  = """
