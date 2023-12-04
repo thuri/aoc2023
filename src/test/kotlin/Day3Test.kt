@@ -20,6 +20,10 @@ class Day3Test {
     assertThat(day.part1(INPUT), `is`(equalTo(535235)))
   }
 
+  @Test
+  fun shouldSumUpGearRatios() {
+    assertThat(day.part2(INPUT), `is`(equalTo(-2)));
+  }
 }
 const val INPUT  = """
 ........954......104.......52......70..............206.806........708..........................217...............................440........
