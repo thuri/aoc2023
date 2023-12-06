@@ -19,8 +19,8 @@ class Day5Test {
   @CsvSource(value = [
     "49,49","50,52", "51,53","52,54","97,99","98,50","99,51", "100,100"
   ])
-  fun shouldGetValueFromMap(source : Int, expectedResult : Int) {
-    val map = AlmanacMap(mutableListOf(
+  fun shouldGetValueFromMap(source : Long, expectedResult : Long) {
+    val map = AlmanacMap("source", "destination", mutableListOf(
       AlmanacRange(50, 98, 2),
       AlmanacRange(52, 50, 48)
     ))
@@ -29,8 +29,49 @@ class Day5Test {
 
   @Test
   fun shouldFindLowestLocationNumber() {
-    assertThat(day.part1(INPUT), `is`(-2));
+    assertThat(day.part1(INPUT), `is`(-2L));
   }
+
+  @Test
+  fun shouldFindLowestLocationNumber_small() {
+    assertThat(day.part1(INPUT_SMALL), `is`(35L));
+  }
+
+  val INPUT_SMALL = """
+    seeds: 79 14 55 13
+
+    seed-to-soil map:
+    50 98 2
+    52 50 48
+
+    soil-to-fertilizer map:
+    0 15 37
+    37 52 2
+    39 0 15
+
+    fertilizer-to-water map:
+    49 53 8
+    0 11 42
+    42 0 7
+    57 7 4
+
+    water-to-light map:
+    88 18 7
+    18 25 70
+
+    light-to-temperature map:
+    45 77 23
+    81 45 19
+    68 64 13
+
+    temperature-to-humidity map:
+    0 69 1
+    1 0 69
+
+    humidity-to-location map:
+    60 56 37
+    56 93 4
+  """.trimIndent().split("\n")
 
   val INPUT = """
     seeds: 2149186375 163827995 1217693442 67424215 365381741 74637275 1627905362 77016740 22956580 60539394 586585112 391263016 2740196667 355728559 2326609724 132259842 2479354214 184627854 3683286274 337630529
@@ -259,5 +300,5 @@ class Day5Test {
     3124768961 3581093381 213781997
     511735481 1481246364 58101507
     2624588397 1382165537 99080827
-  """.trimIndent().split("\n").filter { it.isNotBlank() }
+  """.trimIndent().split("\n")
 }
