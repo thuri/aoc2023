@@ -1,5 +1,6 @@
-package net.lueckonline.aoc2023.kotlin
-
+import net.lueckonline.aoc2023.kotlin.AlmanacMap
+import net.lueckonline.aoc2023.kotlin.AlmanacRange
+import net.lueckonline.aoc2023.kotlin.Day5
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.BeforeEach
@@ -9,7 +10,7 @@ import org.junit.jupiter.params.provider.CsvSource
 
 class Day5Test {
 
-  lateinit var day : Day5
+  private lateinit var day : Day5
   @BeforeEach
   fun setUp() {
     day = Day5()
@@ -29,15 +30,15 @@ class Day5Test {
 
   @Test
   fun shouldFindLowestLocationNumber() {
-    assertThat(day.part1(INPUT), `is`(-2L));
+    assertThat(day.part1(input), `is`(31599214L))
   }
 
   @Test
   fun shouldFindLowestLocationNumber_small() {
-    assertThat(day.part1(INPUT_SMALL), `is`(35L));
+    assertThat(day.part1(input_small), `is`(35L))
   }
 
-  val INPUT_SMALL = """
+  private val input_small = """
     seeds: 79 14 55 13
 
     seed-to-soil map:
@@ -73,7 +74,7 @@ class Day5Test {
     56 93 4
   """.trimIndent().split("\n")
 
-  val INPUT = """
+  private val input = """
     seeds: 2149186375 163827995 1217693442 67424215 365381741 74637275 1627905362 77016740 22956580 60539394 586585112 391263016 2740196667 355728559 2326609724 132259842 2479354214 184627854 3683286274 337630529
 
     seed-to-soil map:
