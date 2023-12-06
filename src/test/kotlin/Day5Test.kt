@@ -35,10 +35,15 @@ class Day5Test {
 
   @Test
   fun shouldFindLowestLocationNumber_small() {
-    assertThat(day.part1(input_small), `is`(35L))
+    assertThat(day.part1(inputSmall), `is`(35L))
   }
 
-  private val input_small = """
+  @Test
+  fun shouldFindLocationNumberForSeedRanges() {
+    assertThat(day.part2(input), `is`(20358599L))
+  }
+
+  private val inputSmall = """
     seeds: 79 14 55 13
 
     seed-to-soil map:

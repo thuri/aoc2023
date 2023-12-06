@@ -1,5 +1,7 @@
 package net.lueckonline.aoc2023.kotlin
 
+import java.util.stream.LongStream
+
 class Day5 {
 
   fun part1(input: List<String>): Long {
@@ -7,21 +9,51 @@ class Day5 {
     val lineIterator = input.iterator()
     val seeds = Regex("\\d+").findAll(lineIterator.next()).map { it.value.toLong() }.toList()
 
-    val mapOfMaps = mutableMapOf<String, AlmanacMap>()
-    val linesOfMap = mutableListOf<String>()
-    for (line in lineIterator) {
-      if(line.isBlank() && linesOfMap.isNotEmpty()) {
-        buildAlmanacOfCurrentLines(linesOfMap, mapOfMaps)
-      } else if (line.isNotBlank()){
-        linesOfMap.add(line)
-      }
-    }
-    buildAlmanacOfCurrentLines(linesOfMap, mapOfMaps)
+    val mapOfMaps = parseInputFile(lineIterator)
 
     return seeds
       .map { sourceToDestination(it, "seed", mapOfMaps) }
       .minBy { it.first }
       .first
+  }
+
+  fun part2(input: List<String>): Long {
+
+    val lineIterator = input.iterator()
+    val firstLine = lineIterator.next()
+    val mapOfMaps = parseInputFile(lineIterator)
+
+    val seeds = Regex("(\\d+) (\\d+)")
+      .findAll(firstLine)
+      .map { matchResult ->
+        val groups = matchResult.groups
+        val start = groups[1]?.value?.toLong()!!
+        val range = groups[2]?.value?.toLong()!!
+
+        println("seed range - $start -> ${start +range}")
+
+        LongStream.range(start, start + range)
+          .map { sourceToDestination(it, "seed", mapOfMaps).first }
+          .min()
+          .orElse(0)
+      }
+      .min()
+
+    return seeds
+  }
+
+  private fun parseInputFile(lineIterator: Iterator<String>): MutableMap<String, AlmanacMap> {
+    val mapOfMaps = mutableMapOf<String, AlmanacMap>()
+    val linesOfMap = mutableListOf<String>()
+    for (line in lineIterator) {
+      if (line.isBlank() && linesOfMap.isNotEmpty()) {
+        buildAlmanacOfCurrentLines(linesOfMap, mapOfMaps)
+      } else if (line.isNotBlank()) {
+        linesOfMap.add(line)
+      }
+    }
+    buildAlmanacOfCurrentLines(linesOfMap, mapOfMaps)
+    return mapOfMaps
   }
 
   private fun buildAlmanacOfCurrentLines(
