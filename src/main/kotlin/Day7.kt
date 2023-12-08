@@ -9,19 +9,19 @@ class Day7 {
   }
 
   enum class Card(val value : Int, val label : Char) {
-    ACE(14, 'A'),
-    KING(13, 'K'),
+    ACE  (14, 'A'),
+    KING (13, 'K'),
     QUEEN(12, 'Q'),
-    JACK(11, 'J'),
-    TEN(10, 'T'),
-    NINE(9, '9'),
-    EIGHT(8, '8'),
-    SEVEN(7, '7'),
-    SIX(6, '6'),
-    FIVE(5, '5'),
-    FOUR(4, '4'),
-    THREE(3, '3'),
-    TWO(2, '2');
+    JACK (11, 'J'),
+    TEN  (10, 'T'),
+    NINE (9,  '9'),
+    EIGHT(8,  '8'),
+    SEVEN(7,  '7'),
+    SIX  (6,  '6'),
+    FIVE (5,  '5'),
+    FOUR (4,  '4'),
+    THREE(3,  '3'),
+    TWO  (2,  '2');
 
     companion object {
       private val labelMap = Card.entries.associateBy { it.label }
@@ -55,6 +55,9 @@ class Hand (private val cards : List<Day7.Card>, val bid : Long) : Comparable<Ha
     if(compareResult == 0) {
       compareResult = firstHighestCard(this.cards, other.cards)
     }
+
+    println("${this.toString()} - ${other.toString()}: $compareResult")
+
     return compareResult
   }
 
