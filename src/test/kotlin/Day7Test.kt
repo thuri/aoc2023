@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 class Day7Test {
 
   lateinit var day : Day7
+
   @BeforeEach
   fun setUp() {
     day = Day7()
@@ -19,8 +20,23 @@ class Day7Test {
 
   @Test
   fun shouldCalculateTotalWinningsSmall() {
-    MatcherAssert.assertThat(day.part1(input_small), `is`(6440L))
+    MatcherAssert.assertThat(day.part1(input_small.split("\n").filter { it.isNotBlank() }), `is`(6440L))
   }
+
+  @Test
+  fun shouldCalculateTotalWinningsWithJoker() {
+    MatcherAssert.assertThat(day.part2(input), `is`(251824095L))
+  }
+
+  @Test
+  fun shouldCalculateTotalWinningsSmallWithJoker() {
+    MatcherAssert.assertThat(day.part2(input_small.split("\n").filter { it.isNotBlank() }), `is`(5905L))
+  }
+
+  private val input_small2 = """
+    JJJJJ 5
+    J2JJ2 6
+  """.trimIndent()
 
   private val input_small = """
     32T3K 765
@@ -28,7 +44,7 @@ class Day7Test {
     KK677 28
     KTJJT 220
     QQQJA 483
-  """.trimIndent().split("\n").filter { it.isNotBlank() }
+  """.trimIndent()
 
   private val input = """
     8A7J7 301
