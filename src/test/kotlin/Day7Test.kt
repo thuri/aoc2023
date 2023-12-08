@@ -2,7 +2,10 @@ import net.lueckonline.aoc2023.kotlin.Day7
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
+import java.util.stream.Stream
 
 class Day7Test {
 
@@ -13,32 +16,44 @@ class Day7Test {
     day = Day7()
   }
 
-  @Test
-  fun shouldCalculateTotalWinnings() {
-    MatcherAssert.assertThat(day.part1(input), `is`(250946742L))
+  @ParameterizedTest
+  @MethodSource("part1Arguments")
+  fun shouldCalculateTotalWinnings(input : String, expectedResult : Long) {
+    MatcherAssert.assertThat(day.part1(input.split("\n").filter(String::isNotBlank)), `is`(expectedResult))
   }
 
-  @Test
-  fun shouldCalculateTotalWinningsSmall() {
-    MatcherAssert.assertThat(day.part1(input_small.split("\n").filter { it.isNotBlank() }), `is`(6440L))
+  @ParameterizedTest
+  @MethodSource("part2Arguments")
+  fun shouldCalculateTotalWinningsWithJoker(input : String, expectedResult : Long) {
+    MatcherAssert.assertThat(day.part2(input.split("\n").filter(String::isNotBlank)), `is`(expectedResult))
   }
 
-  @Test
-  fun shouldCalculateTotalWinningsWithJoker() {
-    MatcherAssert.assertThat(day.part2(input), `is`(251824095L))
-  }
+  companion object {
 
-  @Test
-  fun shouldCalculateTotalWinningsSmallWithJoker() {
-    MatcherAssert.assertThat(day.part2(input_small.split("\n").filter { it.isNotBlank() }), `is`(5905L))
-  }
+    @JvmStatic
+    fun part1Arguments(): Stream<Arguments> {
+      return Stream.of(
+        Arguments.of(input,250946742L),
+        Arguments.of(input_small,6440L),
+        Arguments.of(input_small2,16L),
+      )
+    }
 
-  private val input_small2 = """
+    @JvmStatic
+    fun part2Arguments(): Stream<Arguments> {
+      return Stream.of(
+        Arguments.of(input,251824095L),
+        Arguments.of(input_small,5905L),
+        Arguments.of(input_small2,17L)
+      )
+    }
+
+    private val input_small2 = """
     JJJJJ 5
     J2JJ2 6
   """.trimIndent()
 
-  private val input_small = """
+    private val input_small = """
     32T3K 765
     T55J5 684
     KK677 28
@@ -46,7 +61,7 @@ class Day7Test {
     QQQJA 483
   """.trimIndent()
 
-  private val input = """
+    private val input = """
     8A7J7 301
     QAAT7 677
     J3K4K 622
@@ -1047,5 +1062,6 @@ class Day7Test {
     376J6 594
     2K975 842
     AAAA6 986
-  """.trimIndent().split("\n").filter { it.isNotBlank() }
+  """.trimIndent()
+  }
 }

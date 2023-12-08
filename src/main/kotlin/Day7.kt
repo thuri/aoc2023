@@ -65,7 +65,7 @@ class Hand (private val cards : List<Day7.Card>, val bid : Long) : Comparable<Ha
       compareResult = firstHighestCard(this.cards, other.cards)
     }
 
-    println("${this.toString()} - ${other.toString()}: $compareResult (${this.nonJokerGroups.size}, ${this.jokerGroupSize}, ${this.maxGroupSize}), (${other.nonJokerGroups.size}, ${other.jokerGroupSize}, ${other.maxGroupSize})")
+//    println("${this.toString()} - ${other.toString()}: $compareResult (${this.nonJokerGroups.size}, ${this.jokerGroupSize}, ${this.maxGroupSize}), (${other.nonJokerGroups.size}, ${other.jokerGroupSize}, ${other.maxGroupSize})")
 
     return compareResult
   }
