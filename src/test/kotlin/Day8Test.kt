@@ -21,16 +21,43 @@ class Day8Test {
     assertThat(day.part1(input), `is`(expectedResult))
   }
 
+  @ParameterizedTest
+  @MethodSource("part2Arguments")
+  fun shouldCalculateStepsSimultaneously(input : List<String>, expectedResult : Long) {
+    assertThat(day.part2(input), `is`(expectedResult))
+  }
+
   companion object {
 
     @JvmStatic
     fun part1Arguments() : Stream<Arguments> {
       return Stream.of(
-        Pair(example1,  2),
-        Pair(example2,  6),
+        Pair(example1,  2L),
+        Pair(example2,  6L),
         Pair(input,     12361L)
       ).map { Arguments.of(it.first.split("\n").filter(String::isNotBlank).toList(), it.second)}
     }
+
+    @JvmStatic
+    fun part2Arguments() : Stream<Arguments> {
+      return Stream.of(
+        Pair(examplePart2,  6L),
+        Pair(input,         -2L)
+      ).map { Arguments.of(it.first.split("\n").filter(String::isNotBlank).toList(), it.second)}
+    }
+
+    private val examplePart2 ="""
+      LR
+
+      11A = (11B, XXX)
+      11B = (XXX, 11Z)
+      11Z = (11B, XXX)
+      22A = (22B, XXX)
+      22B = (22C, 22C)
+      22C = (22Z, 22Z)
+      22Z = (22B, 22B)
+      XXX = (XXX, XXX)
+    """.trimIndent()
 
     private val example1 = """
       RL

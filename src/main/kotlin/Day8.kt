@@ -12,14 +12,37 @@ class Day8 {
     var counter = 0L;
     var nextNode = ""
 
-    while (nextNode != "ZZZ") {
+    do {
       for (c in directions) {
         nextNode = if (c == 'L') currentNode.first else currentNode.second
         counter++
-        if(nextNode === "ZZZ") break;
         currentNode = graph.edges[nextNode]!!
       }
-    }
+    } while (nextNode != "ZZZ")
+
+    return counter;
+  }
+
+  fun part2(input: List<String>): Long {
+
+    val iterator = input.iterator()
+    val directions = iterator.next().toCharArray()
+    val graph = Graph.parse(iterator)
+
+    var currentNodes = graph.edges.filter { it.key.endsWith('A') }.values.toList()
+    var counter = 0L;
+    var nextNodes = listOf<String>()
+
+    var endCondition = { nodes : List<String> -> nodes.filter { it.endsWith('Z') }.size == nodes.size }
+
+    do {
+      for (c in directions) {
+        nextNodes = currentNodes.map { if(c == 'L') it.first else it.second }.toList()
+        counter++
+        currentNodes = nextNodes.map { graph.edges[it]!! }.toList()
+      }
+      println("Iteration $counter")
+    } while (!endCondition.invoke(nextNodes))
 
     return counter;
   }
