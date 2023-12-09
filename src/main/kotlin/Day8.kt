@@ -1,69 +1,74 @@
 package net.lueckonline.aoc2023.kotlin
 
-class Day8 {
+import java.util.function.Predicate
 
-  fun part1(input : List<String>) : Long {
+class Day8 (lines : List<String>){
 
-    val iterator = input.iterator()
-    val directions = iterator.next().toCharArray()
-    val graph = Graph.parse(iterator)
+  private val edges = mutableMapOf<String, Pair<String,String>>()
+  private val directions : CharArray
+  private val regex = Regex("(.{3}) = \\((.{3}), (.{3})\\)")
+  init{
+    val iterator = lines.iterator()
+    directions = iterator.next().toCharArray()
 
-    var currentNode = graph.edges["AAA"]!!
+    while (iterator.hasNext()) {
+      val groups = regex.find(iterator.next())?.groups!!
+      edges[groups[1]!!.value] = Pair(groups[2]!!.value, groups[3]!!.value)
+    }
+  }
+
+  private fun shortestPathLength(startNode : String, endCondition : Predicate<String>) : Pair<String, Long> {
+    var currentNode = edges[startNode]!!
     var counter = 0L;
     var nextNode = ""
 
     do {
       for (c in directions) {
+        if(currentNode.first == currentNode.second && nextNode == currentNode.first) //dead end like XXX = (XXX,XXX)
+          return Pair(startNode, -1L)
         nextNode = if (c == 'L') currentNode.first else currentNode.second
         counter++
-        currentNode = graph.edges[nextNode]!!
+        currentNode = edges[nextNode]!!
       }
-    } while (nextNode != "ZZZ")
+    } while (!endCondition.test(nextNode))
 
-    return counter;
+    return Pair(nextNode,counter)
   }
 
-  fun part2(input: List<String>): Long {
+  fun part1() : Long {
+    return shortestPathLength("AAA") { it == "ZZZ" }.second
+  }
 
-    val iterator = input.iterator()
-    val directions = iterator.next().toCharArray()
-    val graph = Graph.parse(iterator)
+  fun part2(): Long {
 
-    var currentNodes = graph.edges.filter { it.key.endsWith('A') }.values.toList()
-    var counter = 0L;
-    var nextNodes = listOf<String>()
+    val shortestPaths = edges
+      .filter { it.key.endsWith("A") || it.key.endsWith("Z") }
+      .mapValues {
+        val shortestPath = shortestPathLength(it.key){ node -> node.endsWith("Z")}
+        Pair(shortestPath.first, shortestPath.second / directions.size)
+      }
 
-    var endCondition = { nodes : List<String> -> nodes.filter { it.endsWith('Z') }.size == nodes.size }
+    var nodes = shortestPaths.filter { it.key.endsWith("A") }
+    var latestMaxLoops = shortestPaths.maxBy { it.value.second }.value.second
+    var previousMaxLoops = 0L
 
     do {
-      for (c in directions) {
-        nextNodes = currentNodes.map { if(c == 'L') it.first else it.second }.toList()
-        counter++
-        currentNodes = nextNodes.map { graph.edges[it]!! }.toList()
-      }
-      println("Iteration $counter")
-    } while (!endCondition.invoke(nextNodes))
+      previousMaxLoops = latestMaxLoops
+      nodes = nodes.mapValues {
 
-    return counter;
-  }
-
-  class Graph (val edges : Map<String, Pair<String, String>>) {
-
-    companion object {
-
-      private val regex = Regex("(.{3}) = \\((.{3}), (.{3})\\)")
-
-      fun parse(lineIterator : Iterator<String>) : Graph {
-
-        val edges = mutableMapOf<String, Pair<String,String>>()
-        while (lineIterator.hasNext()) {
-          val groups = regex.find(lineIterator.next())?.groups!!
-          edges[groups[1]!!.value] = Pair(groups[2]!!.value, groups[3]!!.value)
+        var nextNode = it.value.first
+        var currentNodeMax = it.value.second
+        while(currentNodeMax < latestMaxLoops) {
+          val pathToNextEndNode = shortestPaths[nextNode]!!
+          currentNodeMax += pathToNextEndNode.second
+          nextNode = pathToNextEndNode.first
         }
+        latestMaxLoops = currentNodeMax
 
-        return Graph(edges)
+        Pair(nextNode, currentNodeMax)
       }
-    }
-  }
+    } while (latestMaxLoops != previousMaxLoops)
 
+    return latestMaxLoops * directions.size;
+  }
 }

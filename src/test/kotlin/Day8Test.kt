@@ -1,30 +1,24 @@
 import net.lueckonline.aoc2023.kotlin.Day8
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
 
 class Day8Test {
-  lateinit private var day: Day8
-
-  @BeforeEach
-  fun setUp() {
-    day = Day8()
-  }
-
   @ParameterizedTest
   @MethodSource("part1Arguments")
   fun shouldCalculateSteps(input : List<String>, expectedResult : Long) {
-    assertThat(day.part1(input), `is`(expectedResult))
+    val day = Day8(input)
+    assertThat(day.part1(), `is`(expectedResult))
   }
 
   @ParameterizedTest
   @MethodSource("part2Arguments")
   fun shouldCalculateStepsSimultaneously(input : List<String>, expectedResult : Long) {
-    assertThat(day.part2(input), `is`(expectedResult))
+    val day = Day8(input)
+    assertThat(day.part2(), `is`(expectedResult))
   }
 
   companion object {
@@ -42,7 +36,7 @@ class Day8Test {
     fun part2Arguments() : Stream<Arguments> {
       return Stream.of(
         Pair(examplePart2,  6L),
-        Pair(input,         -2L)
+        Pair(input,         18215611419223L)
       ).map { Arguments.of(it.first.split("\n").filter(String::isNotBlank).toList(), it.second)}
     }
 
