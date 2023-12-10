@@ -15,22 +15,33 @@ class Day9Test {
     assertThat(Day9(input).part1(), `is`(expectedSum))
   }
 
+  @ParameterizedTest
+  @MethodSource("part2TestInput")
+  fun shouldSumExtrapolateValuesIntoThePast(input : String, expectedSum : Long) {
+    assertThat(Day9(input).part2(), `is`(expectedSum))
+  }
+
   companion object {
     @JvmStatic
     fun testInput() : Stream<Arguments> {
       return Stream.of(
-        Arguments.of(Named.of("single", singleLine), -702052L),
+        Arguments.of(Named.of("single", singleLine), -401653L),
         Arguments.of(Named.of("example", example), 114L),
         Arguments.of(Named.of("puzzleInput", input), 1853145119L)
       )
     }
 
+    @JvmStatic
+    fun part2TestInput() : Stream<Arguments> {
+      return Stream.of(
+        Arguments.of(Named.of("single", singleLine), 1L),
+        Arguments.of(Named.of("example", example), 2L),
+        Arguments.of(Named.of("puzzleInput", input), 923L)
+      )
+    }
+
     private val singleLine = """
-      13  28  45  59  57   23   -46   -115  -83   238   1123    2895    5825    9945    14744    18713   18701     9040      -19607      -81725       -198807
-        15  17  14  -2  -34  -69   -69    32   321   885    1772    2930    4120    4799     3969     -12     -9661    -28647      -62118      -117082
-          2   -3  -16  -32 -35   0    101    289   564   887    1158    1190    679     -830     -3981   -9649     -18986    -33471      -54964
-            -5  -13  -16  -3  -35  101    188   365   323   
-           
+      13 28 45 59 57 23 -46 -115 -83 238 1123 2895 5825 9945 14744 18713 18701 9040 -19607 -81725 -198807
     """.trimIndent()
 
     private val example = """
