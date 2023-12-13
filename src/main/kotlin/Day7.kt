@@ -32,7 +32,7 @@ class Day7 {
 
     companion object {
       private val labelMap = Card.entries.groupBy { it.label }
-      fun fromLabel(label: Char, withJoker: Boolean = false) = labelMap[label]?.filterNot{ it == if(withJoker) JACK else JOKER }?.first!!
+      fun fromLabel(label: Char, withJoker: Boolean = false) = labelMap[label]?.filterNot{ it == if(withJoker) JACK else JOKER }?.first()!!
     }
   }
 }
