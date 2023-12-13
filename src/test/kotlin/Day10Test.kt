@@ -22,7 +22,7 @@ class Day10Test {
         Arguments.of(Named.of("example1", example1), 4L),
         Arguments.of(Named.of("example2", example2), 4L),
         Arguments.of(Named.of("example3", example3), 8L),
-        Arguments.of(Named.of("input", input), -3L)
+        Arguments.of(Named.of("input", input), 6649L)
       )
     }
 
