@@ -28,8 +28,7 @@ class Day10(line : String) {
       val moves = availableMoves();
       if(moves.isNotEmpty()) {
         ++ counter
-        val current = this.lines[currentPosition.first][currentPosition.second]
-        this.lines[currentPosition.first][currentPosition.second] = if(current == '|') '#' else '*'
+        replaceField(counter)
         currentPosition = moves[0]
       }
       if(moves.size > 1)
@@ -38,9 +37,13 @@ class Day10(line : String) {
         currentPosition = stack.pop()
     } while (!stack.empty() && currentPosition != startPosition)
 
-    val current = this.lines[currentPosition.first][currentPosition.second]
-    this.lines[currentPosition.first][currentPosition.second] = if(current == '|') '#' else '*'
+    replaceField(counter)
     return counter / 2 + 1
+  }
+
+  private fun replaceField(counter : Long) {
+    val current = this.lines[currentPosition.first][currentPosition.second]
+    this.lines[currentPosition.first][currentPosition.second] = if (current == '|') '#' else '*'
   }
 
   fun part2() : Long {
