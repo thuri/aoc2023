@@ -6,17 +6,17 @@ import java.util.function.Consumer
 
 class Day10(line : String) {
 
-  private val lines: List<MutableList<Char>>
+  private val lines: List<MutableList<Char>> = line.split("\n")
+                   .filter { it.isNotBlank() }
+                   .map { it.toCharArray().toMutableList()}
 
   private var currentPosition : Pair<Int,Int>
 
   private val stack : Stack<Pair<Int,Int>> = Stack()
 
   init {
-    this.lines = line.split("\n")
-                     .filter { it.isNotBlank() }
-                     .map { it.toCharArray().toMutableList()}
-    this.currentPosition = this.lines.mapIndexed { index, s -> Pair(index, s.indexOf('S'))}
+    this.currentPosition = this.lines
+      .mapIndexed { index, s -> Pair(index, s.indexOf('S'))}
       .find { it.second != -1 } ?: Pair(-1,-1)
   }
 
@@ -28,7 +28,8 @@ class Day10(line : String) {
       val moves = availableMoves();
       if(moves.isNotEmpty()) {
         ++ counter
-        this.lines[currentPosition.first][currentPosition.second] = '.'
+        val current = this.lines[currentPosition.first][currentPosition.second]
+        this.lines[currentPosition.first][currentPosition.second] = if(current == '|') '#' else '*'
         currentPosition = moves[0]
       }
       if(moves.size > 1)
@@ -36,7 +37,27 @@ class Day10(line : String) {
       if(moves.isEmpty() && stack.isNotEmpty())
         currentPosition = stack.pop()
     } while (!stack.empty() && currentPosition != startPosition)
+
+    val current = this.lines[currentPosition.first][currentPosition.second]
+    this.lines[currentPosition.first][currentPosition.second] = if(current == '|') '#' else '*'
     return counter / 2 + 1
+  }
+
+  fun part2() : Long {
+    part1()
+
+    var counter = 0L
+    var inOut = 0
+    for (line in lines) {
+      print('\n')
+      for(c in line) {
+        print(c)
+        if(c == '#') inOut = (++inOut % 2)
+        if(c == '.' && inOut == 1) counter ++
+      }
+    }
+
+    return counter
   }
 
 //  | is a vertical pipe connecting north and south.

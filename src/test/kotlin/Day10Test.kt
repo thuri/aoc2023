@@ -15,6 +15,12 @@ class Day10Test {
     assertThat(Day10(input).part1(), `is`(expectedResult))
   }
 
+  @ParameterizedTest
+  @MethodSource("part2Input")
+  fun shouldCountInnerTiles(input : String, expectedResult : Long) {
+    assertThat(Day10(input).part2(), `is`(expectedResult))
+  }
+
   companion object {
     @JvmStatic
     fun part1Input() : Stream<Arguments> {
@@ -23,6 +29,16 @@ class Day10Test {
         Arguments.of(Named.of("example2", example2), 4L),
         Arguments.of(Named.of("example3", example3), 8L),
         Arguments.of(Named.of("input", input), 6649L)
+      )
+    }
+
+    @JvmStatic
+    fun part2Input() : Stream<Arguments> {
+      return Stream.of(
+        Arguments.of(Named.of("examplePart2", examplePart2), 4L),
+        Arguments.of(Named.of("example2", example2), -2L),
+        Arguments.of(Named.of("example3", example3), -2L),
+        Arguments.of(Named.of("input", input), -2L)
       )
     }
 
@@ -48,6 +64,18 @@ class Day10Test {
       SJLL7
       |F--J
       LJ.LJ
+    """.trimIndent()
+
+    private val examplePart2 = """
+      ...........
+      .S-------7.
+      .|F-----7|.
+      .||.....||.
+      .||.....||.
+      .|L-7.F-J|.
+      .|..|.|..|.
+      .L--J.L--J.
+      ...........
     """.trimIndent()
 
     private val input = """
